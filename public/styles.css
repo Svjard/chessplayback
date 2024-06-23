@@ -80,3 +80,23 @@ header img {
     align-items: center;
   }
 }
+
+.instructions {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border-bottom: 1px solid #000;
+}
+
+.instructions-title {
+  font-weight: 900;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.text-line {
+  display: block;
+  padding: 5px 0;
+}
