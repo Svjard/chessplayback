@@ -180,6 +180,19 @@ button.primary:hover {
     rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
 }
 
+button.no-border:hover {
+  border: 0 !important;
+}
+
+button.disabled {
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  cursor: default;
+  border: 0;
+}
+
 #moves {
   max-height: 250px;
 }
@@ -234,4 +247,28 @@ button.primary:hover {
 
 input.invalid {
   border: 1px solid red;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.control {
+  background: transparent;
+  display: flex;
+  border: 0;
+  cursor: pointer;
+}
+
+.control svg {
+  width: 40px;
+  height: 40px;
+}
+
+#chess-board {
+  margin-top: 15px;
 }

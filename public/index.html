@@ -37,7 +37,59 @@
           </div>
           <button id="start" class="primary margin-lr-10">Start</button>  
         </div>
-        <div class="col board-col"></div>
+        <div class="col board-col">
+          <img id="chess-board" width="500" height="500" src="images/board.png" />
+          <div class="controls">
+            <button id="jump-to-start" class="control no-border">
+              <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" fill="none" width="20" height="20"/>
+                <g>
+                  <path d="M11.98 7.63l6-3.6v12l-6-3.6v3.6l-8-4.8v4.8h-2v-12h2v4.8l8-4.8v3.6z"/>
+                </g>
+              </svg>
+            </button>
+            <button id="rewind" class="control no-border">
+              <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" fill="none" width="20" height="20"/>
+                <g>
+                  <path d="M2 10l10-6v3.6L18 4v12l-6-3.6V16z"/>
+                </g>  
+              </svg>
+            </button>
+            <button id="pause" class="control no-border" style="display: none">
+              <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" fill="none" width="20" height="20"/>
+                <g>
+                  <path d="M5 16V4h3v12H5zm7-12h3v12h-3V4z"/>
+                </g>
+              </svg>
+            </button>
+            <button id="play" class="control no-border">
+              <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" fill="none" width="20" height="20"/>
+                <g>
+                  <path d="M5 4l10 6-10 6V4z"/>
+                </g>
+              </svg>
+            </button>
+            <button id="fast-forward" class="control no-border">
+              <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" fill="none" width="20" height="20"/>
+                <g>
+                  <path d="M18 10L8 16v-3.6L2 16V4l6 3.6V4z"/>
+                </g>
+              </svg>
+            </button>
+            <button id="jump-to-end" class="control no-border">
+              <svg width="24px" height="24px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" fill="none" width="20" height="20"/>
+                <g>
+                  <path d="M8 12.4L2 16V4l6 3.6V4l8 4.8V4h2v12h-2v-4.8L8 16v-3.6z"/>
+                </g>  
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <template id="move">
