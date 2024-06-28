@@ -92,6 +92,25 @@
         </div>
       </div>
     </div>
+    <div id="bulk-import-dialog" class="dialog-wrapper">
+      <div class="dialog-backdrop"></div>
+      <div class="dialog-container">
+        <div class="dialog">
+          <h2 class="dialog-header">Bulk Import</h2>
+          <div class="dialog-content">
+            <div class="bulk-import-box-wrapper">
+              <p>Enter a set of board states in FEN format below. Each board state should be on its own line.</p>
+              <textarea id="bulk-import-moves"></textarea>
+              <div id="import-error">Import cannot be blank.</div>
+            </div>
+          </div>
+          <div class="dialog-footer">
+            <button id="bulk-import-cancel" class="default">Cancel</button>
+            <button id="bulk-import-import" class="default">Import</button>
+          </div>
+        </div>
+      </div>
+    </div>  
     <template id="move">
       <div class="board-move">
         <div class="reorder">
