@@ -1,12 +1,24 @@
+import { when } from 'jest-when';
+import Chance from 'chance';
+import BoardState from '../src/boardstate';
+import * as sut from '../src/chessplayback';
+
+const chance = new Chance();
+
 describe('Chess Playback Tests', () => {
   let getElementByIdFn,
-      addEventListenerFn;
+      addEventListenerFn,
+      styleObj;
   
   beforeEach(() => {
     addEventListenerFn = jest.fn();
+    styleObj = {
+      display: chance.guid(),
+    };
 
     getElementByIdFn = jest.fn().mockReturnValue({
       addEventListener: addEventListenerFn,
+      style: styleObj,
     });
 
     global.document = {
@@ -39,7 +51,20 @@ describe('Chess Playback Tests', () => {
       addEventListenerFn.mock.calls[0][1]();
 
       expect(boardState.moves).toStrictEqual([{ value: '', isDirty: false }]);
-      expect(getElementByIdFn).toHaveBeenCalledWith('move');
+    });
+
+    it('should setup event listener for clicking bulk import button', () => {
+      boardState.moves = [];
+
+      sut.initializeEvents(boardState);
+
+      expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import');
+      expect(addEventListenerFn.mock.calls[0][0]).toEqual('click');
+
+      addEventListenerFn.mock.calls[1][1]();
+
+      expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-dialog');
+      expect(styleObj.display).toBe('block');
     });
   });
 });
