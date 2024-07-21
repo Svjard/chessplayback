@@ -8,7 +8,9 @@ const chance = new Chance();
 describe('Chess Playback Tests', () => {
   let getElementByIdFn,
       addEventListenerFn,
-      styleObj;
+      getElementByIdMock,
+      styleObj,
+      classListObj;
   
   beforeEach(() => {
     addEventListenerFn = jest.fn();
@@ -16,10 +18,17 @@ describe('Chess Playback Tests', () => {
       display: chance.guid(),
     };
 
-    getElementByIdFn = jest.fn().mockReturnValue({
+    classListObj = {
+      add: jest.fn(),
+    };
+
+    getElementByIdMock = {
       addEventListener: addEventListenerFn,
+      classList: classListObj,
       style: styleObj,
-    });
+    };
+
+    getElementByIdFn = jest.fn().mockReturnValue(getElementByIdMock);
 
     global.document = {
       getElementById: getElementByIdFn,
@@ -79,6 +88,50 @@ describe('Chess Playback Tests', () => {
 
       expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-dialog');
       expect(styleObj.display).toBe('none');
+    });
+
+    describe('bulk import dialog :: submit button', () => {
+      it('should setup event listener for clicking import button', () => {
+        boardState.moves = [];
+
+        sut.initializeEvents(boardState);
+
+        expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-import');
+        expect(addEventListenerFn.mock.calls[3][0]).toEqual('click');
+      });
+
+      it('should handle validation of an empty text area', () => {
+        getElementByIdMock.value = '';
+        
+        boardState.moves = [];
+
+        sut.initializeEvents(boardState);
+
+        addEventListenerFn.mock.calls[3][1]();
+
+        expect(getElementByIdFn).toHaveBeenNthCalledWith(5, 'bulk-import-moves');
+        expect(getElementByIdFn).toHaveBeenNthCalledWith(6, 'bulk-import-moves');
+        expect(getElementByIdFn).toHaveBeenCalledWith('import-error');
+        expect(classListObj.add).toHaveBeenCalledWith('invalid');
+        expect(styleObj.display).toBe('flex');
+        expect(getElementByIdFn).not.toHaveBeenCalledWith('bulk-import-dialog');
+      });
+
+      it('should add moves from the text area', () => {
+        const expectedMoves = chance.n(chance.guid, chance.d6());
+        
+        getElementByIdMock.value = expectedMoves.join('\n');
+        
+        boardState.moves = [];
+
+        sut.initializeEvents(boardState);
+
+        addEventListenerFn.mock.calls[3][1]();
+
+        expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-dialog');
+        expect(styleObj.display).toBe('none');
+        expect(boardState.moves).toStrictEqual(expectedMoves.map(m => ({ value: m })));
+      });
     });
   });
 });
