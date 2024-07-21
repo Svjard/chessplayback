@@ -9,4 +9,8 @@ export function initializeEvents(boardState) {
   document.getElementById('bulk-import').addEventListener('click', () => {
     document.getElementById('bulk-import-dialog').style.display = 'block';
   });
+
+  document.getElementById('bulk-import-cancel').addEventListener('click', () => {
+    document.getElementById('bulk-import-dialog').style.display = 'none';
+  });
 }

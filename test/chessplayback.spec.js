@@ -59,12 +59,26 @@ describe('Chess Playback Tests', () => {
       sut.initializeEvents(boardState);
 
       expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import');
-      expect(addEventListenerFn.mock.calls[0][0]).toEqual('click');
+      expect(addEventListenerFn.mock.calls[1][0]).toEqual('click');
 
       addEventListenerFn.mock.calls[1][1]();
 
       expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-dialog');
       expect(styleObj.display).toBe('block');
+    });
+
+    it('should setup event listener for clicking bulk import cancel button', () => {
+      boardState.moves = [];
+
+      sut.initializeEvents(boardState);
+
+      expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-cancel');
+      expect(addEventListenerFn.mock.calls[2][0]).toEqual('click');
+
+      addEventListenerFn.mock.calls[2][1]();
+
+      expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import-dialog');
+      expect(styleObj.display).toBe('none');
     });
   });
 });
