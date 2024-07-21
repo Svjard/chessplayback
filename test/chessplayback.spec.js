@@ -59,7 +59,7 @@ describe('Chess Playback Tests', () => {
       sut.initializeEvents(boardState);
 
       expect(getElementByIdFn).toHaveBeenCalledWith('bulk-import');
-      expect(addEventListenerFn.mock.calls[0][0]).toEqual('click');
+      expect(addEventListenerFn.mock.calls[1][0]).toEqual('click');
 
       addEventListenerFn.mock.calls[1][1]();
 
