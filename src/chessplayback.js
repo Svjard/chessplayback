@@ -1,3 +1,5 @@
+import { isValid } from './validator';
+
 /**
  * Setup the events for the static elements on the page. 
  */
@@ -25,7 +27,23 @@ export function initializeEvents(boardState) {
     const moves = movesText.split('\n');
 
     document.getElementById('bulk-import-dialog').style.display = 'none';
-      
+
     boardState.moves.push(...moves.map(m => ({ value: m })));
+  });
+
+  document.getElementById('start').addEventListener('click', () => {
+    let hasError = false;
+    boardState.moves.forEach(m => {
+      if (!isValid(m.value)) {
+        hasError = true;
+      }
+    });
+
+    if (!hasError) {
+      document.getElementById('play').style.display = 'none';
+      document.getElementById('pause').style.display = 'block';
+
+      boardState.play();
+    }
   });
 }
