@@ -25,7 +25,7 @@ export function initializeEvents(boardState) {
     const moves = movesText.split('\n');
 
     document.getElementById('bulk-import-dialog').style.display = 'none';
-      
+
     boardState.moves.push(...moves.map(m => ({ value: m })));
   });
 }
