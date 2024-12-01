@@ -30,20 +30,4 @@ export function initializeEvents(boardState) {
 
     boardState.moves.push(...moves.map(m => ({ value: m })));
   });
-
-  document.getElementById('start').addEventListener('click', () => {
-    let hasError = false;
-    boardState.moves.forEach(m => {
-      if (!isValid(m.value)) {
-        hasError = true;
-      }
-    });
-
-    if (!hasError) {
-      document.getElementById('play').style.display = 'none';
-      document.getElementById('pause').style.display = 'block';
-
-      boardState.play();
-    }
-  });
 }
