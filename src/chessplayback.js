@@ -1,5 +1,3 @@
-import { isValid } from './validator';
-
 /**
  * Setup the events for the static elements on the page. 
  */
