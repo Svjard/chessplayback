@@ -1,3 +1,5 @@
+import { isValid } from './validator';
+
 /**
  * Setup the events for the static elements on the page. 
  */
@@ -27,5 +29,25 @@ export function initializeEvents(boardState) {
     document.getElementById('bulk-import-dialog').style.display = 'none';
 
     boardState.moves.push(...moves.map(m => ({ value: m })));
+  });
+
+  document.getElementById('start').addEventListener('click', () => {
+    let hasError = false;
+    for (let i = 0; i < boardState.moves.length; i++) {
+      const move = boardState.moves[i];
+
+      if (!isValid(move.value)) {
+        hasError = true;
+        break;
+      }
+    }
+
+    if (!hasError) {
+      // Hide the play button and show the pause button instead
+      document.getElementById('play').style.display = 'none';
+      document.getElementById('pause').style.display = 'block';
+
+      boardState.play();
+    }
   });
 }
