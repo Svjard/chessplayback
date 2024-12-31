@@ -7,11 +7,11 @@ const chance = new Chance();
 
 describe('Chess Playback Tests', () => {
   let getElementByIdFn,
-      addEventListenerFn,
-      getElementByIdMock,
-      styleObj,
-      classListObj;
-  
+    addEventListenerFn,
+    getElementByIdMock,
+    styleObj,
+    classListObj;
+
   beforeEach(() => {
     addEventListenerFn = jest.fn();
     styleObj = {
@@ -34,21 +34,21 @@ describe('Chess Playback Tests', () => {
       getElementById: getElementByIdFn,
     };
   });
-      
+
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe('initializeEvents', () => {
     let boardState;
-    
+
     beforeEach(() => {
       boardState = new BoardState();
       boardState.moves = [{ value: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR' }];
 
       when(getElementByIdFn).calledWith('add-new-state').mockReturnValue({ addEventListener: addEventListenerFn });
     });
-      
+
     it('should setup event listeners for add new move button', () => {
       boardState.moves = [];
 
@@ -60,6 +60,55 @@ describe('Chess Playback Tests', () => {
       addEventListenerFn.mock.calls[0][1]();
 
       expect(boardState.moves).toStrictEqual([{ value: '', isDirty: false }]);
+    });
+
+    describe('start button :: click event', () => {
+      const playStyleObj = {
+        style: { display: '' }
+      };
+      const pauseStyleObj = {
+        style: { display: '' }
+      };
+
+      beforeEach(() => {
+        jest.spyOn(boardState, 'play');
+
+        when(getElementByIdFn).calledWith('play').mockReturnValue(playStyleObj);
+        when(getElementByIdFn).calledWith('pause').mockReturnValue(pauseStyleObj);
+      });
+
+      it('should handle when at least one move contains an invalid value', () => {
+        boardState.moves = [
+          { value: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR' },
+          { value: chance.guid() }
+        ];
+
+        sut.initializeEvents(boardState);
+
+        expect(getElementByIdFn).toHaveBeenCalledWith('start');
+        expect(addEventListenerFn.mock.calls[0][0]).toEqual('click');
+
+        addEventListenerFn.mock.calls[4][1]();
+
+        expect(boardState.play).not.toHaveBeenCalled();
+      });
+
+      it('should start the animation when all moves are valid', () => {
+        boardState.moves = [{ value: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR' }];
+
+        sut.initializeEvents(boardState);
+
+        expect(getElementByIdFn).toHaveBeenCalledWith('start');
+        expect(addEventListenerFn.mock.calls[0][0]).toEqual('click');
+
+        addEventListenerFn.mock.calls[4][1]();
+
+        expect(getElementByIdFn).toHaveBeenCalledWith('play');
+        expect(playStyleObj.style.display).toBe('none');
+        expect(getElementByIdFn).toHaveBeenCalledWith('pause');
+        expect(pauseStyleObj.style.display).toBe('block');
+        expect(boardState.play).toHaveBeenCalled();
+      });
     });
 
     it('should setup event listener for clicking bulk import button', () => {
@@ -102,15 +151,15 @@ describe('Chess Playback Tests', () => {
 
       it('should handle validation of an empty text area', () => {
         getElementByIdMock.value = '';
-        
+
         boardState.moves = [];
 
         sut.initializeEvents(boardState);
 
         addEventListenerFn.mock.calls[3][1]();
 
-        expect(getElementByIdFn).toHaveBeenNthCalledWith(5, 'bulk-import-moves');
         expect(getElementByIdFn).toHaveBeenNthCalledWith(6, 'bulk-import-moves');
+        expect(getElementByIdFn).toHaveBeenNthCalledWith(7, 'bulk-import-moves');
         expect(getElementByIdFn).toHaveBeenCalledWith('import-error');
         expect(classListObj.add).toHaveBeenCalledWith('invalid');
         expect(styleObj.display).toBe('flex');
@@ -119,9 +168,9 @@ describe('Chess Playback Tests', () => {
 
       it('should add moves from the text area', () => {
         const expectedMoves = chance.n(chance.guid, chance.d6());
-        
+
         getElementByIdMock.value = expectedMoves.join('\n');
-        
+
         boardState.moves = [];
 
         sut.initializeEvents(boardState);
